@@ -112,4 +112,8 @@ public class Orc {
             return new Orc(this);
         }
     }
+                @Override
+    public String toString() {
+        return name;
+                }
 }

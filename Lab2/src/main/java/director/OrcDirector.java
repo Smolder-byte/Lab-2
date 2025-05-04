@@ -5,17 +5,17 @@ import factories.builder.*;
 import model.*;
 
 public class OrcDirector {
-    public Orc createBasicOrk(OrcBuilderFactory builderFactory) {
+    public Orc createBasicOrc(OrcBuilderFactory builderFactory) {
         return builderFactory.createOrcBuilder().build();
     }
 
-    public Orc createLeaderOrk(OrcBuilderFactory builderFactory) {
+    public Orc createLeaderOrc(OrcBuilderFactory builderFactory) {
         Orc.OrcBuilder builder = builderFactory.createOrcBuilder();
         builder.setBanner(builder.banner + " и горн");
         return builder.build();
     }
 
-    public Orc createScoutOrk(OrcBuilderFactory builderFactory) {
+    public Orc createScoutOrc(OrcBuilderFactory builderFactory) {
         Orc.OrcBuilder builder = builderFactory.createOrcBuilder();
         builder.setWeapon("Лук");
         return builder.build();
