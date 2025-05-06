@@ -98,7 +98,7 @@ public class ArmyGUI extends JFrame {
     private void addOrcToTree(Orc orc) {
         String tribe = orc.getTribe();
         if (!army.containsKey(tribe)) {
-            army.put(tribe, new ArrayList<Orc>());
+            army.put(tribe, new ArrayList <Orc>());
         }
         army.get(tribe).add(orc);
         
