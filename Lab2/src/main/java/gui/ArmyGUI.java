@@ -1,7 +1,6 @@
 package gui;
 
 import director.*;
-import factories.builder.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
@@ -74,27 +73,9 @@ public class ArmyGUI extends JFrame {
     }
 
     private Orc createOrc(String tribe, String role) {
-        OrcBuilderFactory factory = getBuilderFactory(tribe);
-        if ("Командир".equals(role)) {
-            return director.createLeaderOrc(factory);
-        } else if ("Разведчик".equals(role)) {
-            return director.createScoutOrc(factory);
-        } else {
-            return director.createBasicOrc(factory);
-        }
+        return director.createOrc(tribe, role);
     }
-
-    private OrcBuilderFactory getBuilderFactory(String tribe) {
-        if ("Мордор".equals(tribe)) {
-            return new MordorOrcBuilderFactory();
-        } else if ("Дол Гулдур".equals(tribe)) {
-            return new DolGuldurOrcBuilderFactory();
-        } else if ("Мглистые Горы".equals(tribe)) {
-            return new MistyMountainsOrcBuilderFactory();
-        }
-        throw new IllegalArgumentException("Неизвестное племя");
-    }
-
+    
     private void addOrcToTree(Orc orc) {
         String tribe = orc.getTribe();
         if (!army.containsKey(tribe)) {
