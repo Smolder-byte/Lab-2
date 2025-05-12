@@ -6,7 +6,7 @@ import model.*;
 
 public class OrcDirector {
     public Orc createOrc(String tribe, String role) {
-        OrcBuilderFactory factory = getBuilderFactory(tribe); // Выбор фабрики внутри директора
+        OrcBuilderFactory factory = getBuilderFactory(tribe);
         return createOrcByRole(role, factory);
     }
 
