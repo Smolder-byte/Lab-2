@@ -1,51 +1,78 @@
-
 package director;
 
-import factories.builder.*;
-import model.*;
+import model.ArmyTree;
+import model.Orc;
+import factories.OrcBuilderFactory;
+import builders.OrcBuilder;
+import factories.gear.Bow;
+import factories.gear.Horn;
 
 public class OrcDirector {
-    public Orc createOrc(String tribe, String role) {
-        OrcBuilderFactory factory = getBuilderFactory(tribe);
-        return createOrcByRole(role, factory);
+    private final OrcBuilderFactory builderFactory = new OrcBuilderFactory();
+    private final ArmyTree armyTree;
+
+    public OrcDirector(ArmyTree armyTree) {
+        this.armyTree = armyTree;
     }
 
-    private OrcBuilderFactory getBuilderFactory(String tribe) {
-        switch (tribe) {
-            case "Мордор":
-                return new MordorOrcBuilderFactory();
-            case "Дол Гулдур":
-                return new DolGuldurOrcBuilderFactory();
-            case "Мглистые Горы":
-                return new MistyMountainsOrcBuilderFactory();
-            default:
-                throw new IllegalArgumentException("Неизвестное племя: " + tribe);
-        }
+    public Orc createBasicOrk(String tribe) {
+        OrcBuilder builder = getBuilderForTribe(tribe);
+        builder.setRandomName().setType("Базовый орк").setAttributes().setEquipment();
+        Orc ork = builder.build();
+        return finalizeOrk(new Orc(
+            ork.getName(), ork.getTribe(), ork.getType(),
+            ork.getWeapon(),
+            ork.getArmor(),
+            null,
+            ork.getStrength(),
+            ork.getAgility(),
+            ork.getIntellect(),
+            ork.getHealth()
+        ));
     }
 
-    private Orc createOrcByRole(String role, OrcBuilderFactory factory) {
-        if ("Командир".equals(role)) {
-            return createLeaderOrc(factory);
-        } else if ("Разведчик".equals(role)) {
-            return createScoutOrc(factory);
-        } else {
-            return createBasicOrc(factory);
-        }
+    public Orc createLeaderOrk(String tribe) {
+        OrcBuilder builder = getBuilderForTribe(tribe);
+        builder.setRandomName().setType("Командир").setAttributes().setEquipment();
+        Orc ork = builder.build();
+        return finalizeOrk(new Orc(
+            ork.getName(), ork.getTribe(), ork.getType(),
+            new Horn(),
+            ork.getArmor(),
+            ork.getBanner(),
+            ork.getStrength(),
+            ork.getAgility(),
+            ork.getIntellect(),
+            ork.getHealth()
+        ));
     }
 
-    private Orc createBasicOrc(OrcBuilderFactory factory) {
-        return factory.createOrcBuilder().build();
+    public Orc createScoutOrk(String tribe) {
+        OrcBuilder builder = getBuilderForTribe(tribe);
+        builder.setRandomName().setType("Разведчик").setAttributes().setEquipment();
+        Orc ork = builder.build();
+        return finalizeOrk(new Orc(
+            ork.getName(), ork.getTribe(), ork.getType(),
+            new Bow(),
+            ork.getArmor(),
+            null,
+            ork.getStrength(),
+            ork.getAgility(),
+            ork.getIntellect(),
+            ork.getHealth()
+        ));
     }
 
-    private Orc createLeaderOrc(OrcBuilderFactory factory) {
-        Orc.OrcBuilder builder = factory.createOrcBuilder();
-        builder.setBanner(builder.banner + " и горн");
-        return builder.build();
+    private OrcBuilder getBuilderForTribe(String tribe) {
+        return switch(tribe) {
+            case "Дол Гулдур" -> builderFactory.createDolGuldurOrkBuilder();
+            case "Мглистые Горы" -> builderFactory.createMistyMountainsOrkBuilder();
+            default -> builderFactory.createMordorOrkBuilder();
+        };
     }
 
-    private Orc createScoutOrc(OrcBuilderFactory factory) {
-        Orc.OrcBuilder builder = factory.createOrcBuilder();
-        builder.setWeapon("Лук");
-        return builder.build();
+    private Orc finalizeOrk(Orc ork) {
+        armyTree.addOrk(ork);
+        return ork;
     }
 }
