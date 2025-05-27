@@ -1,6 +1,8 @@
 package builders;
 
 import factories.OrcGearFactory;
+import factories.gear.Bow;
+import factories.gear.Horn;
 
 
 public class DolGuldurOrcBuilder extends OrcBuilder {
@@ -19,11 +21,23 @@ public class DolGuldurOrcBuilder extends OrcBuilder {
 
     @Override
     public OrcBuilder setEquipment() {
-        this.weapon = gearFactory.createWeapon();
+        if ("Командир".equals(type)) {
+            this.weapon = new Horn();
+            this.banner = gearFactory.createBanner();
+        } 
+        else if ("Разведчик".equals(type)) {
+            this.weapon = new Bow();
+            this.banner = null;
+        }
+        else {
+            this.weapon = gearFactory.createWeapon();
+            this.banner = null;
+        }
+        
         this.armor = gearFactory.createArmor();
-        this.banner = gearFactory.createBanner();
         return this;
     }
+   
 
     @Override
     protected String getTribeName() {

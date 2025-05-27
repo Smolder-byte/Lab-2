@@ -10,7 +10,7 @@ public class Lab2 {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 ArmyTree armyTree = new ArmyTree();
-                OrcDirector director = new OrcDirector(armyTree);
+                OrcDirector director = new OrcDirector();
                 GUI gui = new GUI(director, armyTree);
                 gui.setVisible(true);
             }

@@ -1,6 +1,8 @@
 package builders;
 
 import factories.OrcGearFactory;
+import factories.gear.Bow;
+import factories.gear.Horn;
 
 public class MistyMountainsOrcBuilder extends OrcBuilder {
     public MistyMountainsOrcBuilder (OrcGearFactory gearFactory){
@@ -16,11 +18,22 @@ public class MistyMountainsOrcBuilder extends OrcBuilder {
         return this;
     }
 
-    @Override
+        @Override
     public OrcBuilder setEquipment() {
-        this.weapon = gearFactory.createWeapon();
+        if ("Командир".equals(type)) {
+            this.weapon = new Horn();
+            this.banner = gearFactory.createBanner();
+        } 
+        else if ("Разведчик".equals(type)) {
+            this.weapon = new Bow();
+            this.banner = null;
+        }
+        else {
+            this.weapon = gearFactory.createWeapon();
+            this.banner = null;
+        }
+        
         this.armor = gearFactory.createArmor();
-        this.banner = gearFactory.createBanner();
         return this;
     }
 

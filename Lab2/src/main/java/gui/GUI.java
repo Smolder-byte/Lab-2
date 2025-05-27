@@ -1,7 +1,9 @@
 package gui;
 
+import builders.OrcBuilder;
 import model.ArmyTree;
 import director.OrcDirector;
+import factories.OrcBuilderFactory;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -56,7 +58,11 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String tribe = (String) tribeCombo.getSelectedItem();
                 String type = (String) typeCombo.getSelectedItem();
-                createOrc(tribe, type);
+                
+                OrcBuilder builder = OrcBuilderFactory.createBuilderForTribe(tribe);
+                Orc orc = createOrkByType(builder, type);
+            
+                armyTree.addOrk(orc);
             }
         });
         panel.add(createButton);
@@ -64,16 +70,11 @@ public class GUI extends JFrame {
         return panel;
     }
 
-    private void createOrc(String tribe, String type) {
-        switch (type) {
-            case "Командир":
-                director.createLeaderOrk(tribe);
-                break;
-            case "Разведчик":
-                director.createScoutOrk(tribe);
-                break;
-            default:
-                director.createBasicOrk(tribe);
+    private Orc createOrkByType(OrcBuilder builder, String type) {
+        switch(type) {
+            case "Командир": return director.createLeaderOrc(builder);
+            case "Разведчик": return director.createScoutOrc(builder);
+            default: return director.createBasicOrc(builder);
         }
     }
 
